@@ -30,6 +30,8 @@ Realtime database забезпечює синхронізація в режим�
 
 Google Analytics обробляє дані про поведінку користувачів у ваших додатках для iOS та Android, що дозволяє приймати кращі рішення щодо вашого продукту та оптимізації маркетингу. SDK автоматично фіксує певні ключові події та властивості користувачів, також ви можете визначити свої власні події для вимірювання речей.
 
-<img src="https://github.com/hermananenko/images/raw/master/1.jpg" width="400">  <img src="https://github.com/hermananenko/images/raw/master/2.jpg" width="400">
-<img src="https://github.com/hermananenko/images/raw/master/3.jpg" width="400">  <img src="https://github.com/hermananenko/images/raw/master/4.jpg" width="400">
-<img src="https://github.com/hermananenko/images/raw/master/5.jpg" width="700">
+<img src="https://github.com/hermananenko/images/raw/master/1.jpg" width="500">  
+<img src="https://github.com/hermananenko/images/raw/master/2.jpg" width="500">
+<img src="https://github.com/hermananenko/images/raw/master/3.jpg" width="500">  
+<img src="https://github.com/hermananenko/images/raw/master/4.jpg" width="500">
+<img src="https://github.com/hermananenko/images/raw/master/5.jpg" width="500">
