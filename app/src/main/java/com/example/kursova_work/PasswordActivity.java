@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * PasswordActivity - here the user enters the password that will be used when entering the system.
+ */
 public class PasswordActivity extends AppCompatActivity {
 
     String email;
@@ -24,6 +27,11 @@ public class PasswordActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Getting a password, go to the NameActivity window.
+     * @see NameActivity
+     *
+     * */
     public void goToNamePicActivity(View v){
         if (e2_password.getText().toString().length() > 6){
             Intent myIntent = new Intent(PasswordActivity.this, NameActivity.class);

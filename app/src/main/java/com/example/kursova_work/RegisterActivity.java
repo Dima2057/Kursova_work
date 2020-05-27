@@ -15,6 +15,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
+/**
+ * RegisterActivity - data processing for authorization (mail) of a new user.
+ * @version 1.0
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     EditText e6_email;
@@ -30,10 +34,14 @@ public class RegisterActivity extends AppCompatActivity {
         dialog = new ProgressDialog (this);
     }
 
+    /**
+     *  Processing received email, authentication, switching to PasswordActivity
+     * @see PasswordActivity
+     * */
     public void goToPasswordActivity(View v){
         dialog.setMessage("Checking email address");
         dialog.show();
-        // check if this email is already registered or not
+
         auth.fetchSignInMethodsForEmail(e6_email.getText().toString()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
             @Override
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
@@ -44,8 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
                         auth.getFirebaseAuthSettings();
 
                         if (!check){
-                            // email does not exists, so we can create this email for user
-
                             Intent myIntent = new Intent(RegisterActivity.this, PasswordActivity.class);
                             myIntent.putExtra("email",e6_email.getText().toString());
                             startActivity(myIntent);

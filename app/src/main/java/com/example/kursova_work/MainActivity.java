@@ -11,6 +11,12 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * MainActivity - responsible for the first window that appears,
+ * the necessary variables are initialized and the required permissions are requested.
+ * @author Tymochko D., Kramar V., Ananenko H.
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
 
@@ -31,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /** Go to login activity */
     public void goToLogin(View v){
         Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(myIntent);
     }
 
+    /** Go to register activity */
     public void goToRegister(View v){
         Intent myIntent = new Intent(MainActivity.this, RegisterActivity.class);
         startActivity(myIntent);

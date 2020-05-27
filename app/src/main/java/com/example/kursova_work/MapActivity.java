@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -18,13 +16,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -43,13 +38,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * MapActivity - displaying the location of users, interaction with the server
+ * (updating location data, obtaining the location of signed users)
+ * @version 1.0
+ */
 public class MapActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
-    FirebaseUser user;
-    DatabaseReference reference;
-    String email;
-    CreateUser iam;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String email;
+    private CreateUser iam;
     private GoogleMap mMap;
     private ArrayList<String> ids;
 
@@ -71,7 +71,11 @@ public class MapActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
+        initMap();
         reference.child("Users").addValueEventListener(new ValueEventListener() {
+            /**
+             * Drawing markers every time data is updated.
+             * */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mMap.clear();
@@ -79,18 +83,18 @@ public class MapActivity extends AppCompatActivity {
                 Iterator<DataSnapshot> iter = ds.iterator();
                 for (; iter.hasNext(); ) {
                     CreateUser data = iter.next().getValue(CreateUser.class);
-                    if (data.email.equals(email)) {
+                    if (data.getEmail().equals(email)) {
                             iam = data;
-                            LatLng my = new LatLng(Double.parseDouble(data.lat), Double.parseDouble(data.lng));
-                            MarkerOptions you = new MarkerOptions().position(my).title("You(" + data.code + ")");
+                            LatLng my = new LatLng(Double.parseDouble(data.getLat()), Double.parseDouble(data.getLng()));
+                            MarkerOptions you = new MarkerOptions().position(my).title("You(" + data.getCode() + ")");
                             mMap.addMarker(you);
                         continue;
                     }
 
-                    if (ids.contains(data.code)) {
+                    if (ids.contains(data.getCode())) {
 
-                            LatLng my = new LatLng(Double.parseDouble(data.lat), Double.parseDouble(data.lng));
-                            MarkerOptions user = new MarkerOptions().position(my).title(data.name + "(" + data.code + ")");
+                            LatLng my = new LatLng(Double.parseDouble(data.getLat()), Double.parseDouble(data.getLng()));
+                            MarkerOptions user = new MarkerOptions().position(my).title(data.getName() + "(" + data.getCode() + ")");
                             mMap.addMarker(user);
                     }
                 }
@@ -103,9 +107,11 @@ public class MapActivity extends AppCompatActivity {
         });
         thread.setDaemon(true);
         thread.start();
-        initMap();
     }
 
+    /**
+     * Adding a new user by id, to display his location.
+     * */
     public void addMember(View view) {
         TextView text = findViewById(R.id.uniId);
         if (!ids.contains(text.getText().toString())) {
@@ -115,12 +121,15 @@ public class MapActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Timer (refresh rate)
+     * */
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
             try {
                 for (; ; ) {
-                    Thread.sleep(5000);
+                    Thread.sleep(10000);
                     updateDataBase();
                 }
             } catch (InterruptedException e) {
@@ -128,41 +137,42 @@ public class MapActivity extends AppCompatActivity {
             }
         }
     });
-
+    /**
+     * Updating your location, getting locations signed by users.
+     * */
     private void updateDataBase() {
         double[] location = getLocation();
         DatabaseReference ref = reference.child("Users").child(user.getUid());
         String key = ref.getKey();
         if(location != null) {
-            iam.lat = String.valueOf(location[0]);
-            iam.lng = String.valueOf(location[1]);
+            iam.setLat(String.valueOf(location[0]));
+            iam.setLng(String.valueOf(location[1]));
         }else{
-            iam.lat = "0";
-            iam.lng = "0";
+            iam.setLat("0");
+            iam.setLng("0");
         }
-        if (iam.isSharing.equals("false")) {
-            iam.isSharing = "true";
+        if (iam.getIsSharing().equals("false")) {
+            iam.setIsSharing("true");
         } else {
-            iam.isSharing = "false";
+            iam.setIsSharing("false");
         }
         Map<String, Object> m = new HashMap<>();
-        m.put("code", iam.code);
-        m.put("email", iam.email);
-        m.put("imageUrl", iam.imageUrl);
-        m.put("isSharing", iam.isSharing);
-        m.put("lat", iam.lat);
-        m.put("lng", iam.lng);
-        m.put("name", iam.name);
-        m.put("password", iam.password);
+        m.put("code", iam.getCode());
+        m.put("email", iam.getEmail());
+        m.put("imageUrl", iam.getImageUrl());
+        m.put("isSharing", iam.getIsSharing());
+        m.put("lat", iam.getLat());
+        m.put("lng", iam.getLng());
+        m.put("name", iam.getName());
+        m.put("password", iam.getPassword());
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(key, m);
         ref.updateChildren(m);
 
     }
-
+    /**
+     * Receiving user location via the Internet.
+     * */
     public double[] getLocation() {
-        // Get the location manager
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             @SuppressLint("MissingPermission") Location locationGPS = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -201,6 +211,9 @@ public class MapActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Map initialization, 1 time during the first launch of the window.
+     * */
     public void initMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {

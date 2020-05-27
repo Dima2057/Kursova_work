@@ -29,6 +29,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * InviteCodeActivity - sending here CreateUser to the server to register a new user.
+ * @version 1.0
+ * @see CreateUser
+ */
 public class InviteCodeActivity extends AppCompatActivity {
 
     String name, email, password, date, isSharing, code;
@@ -68,6 +73,10 @@ public class InviteCodeActivity extends AppCompatActivity {
         t1.setText(code);
     }
 
+    /**
+     * Sending CreateUser to the server, for registering a new user, upon successful registration - switching to MapActivity.
+     * @see MapActivity
+     * */
     public void registerUser(View v) {
         progressDialog.setMessage("Please wait while we are creating an account for you");
         progressDialog.show();
@@ -115,10 +124,11 @@ public class InviteCodeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Receiving user location via the Internet.
+     * */
     public double[] getLocation()
     {
-        // Get the location manager
-
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         @SuppressLint("MissingPermission") Location locationGPS = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         double lat,lon;
@@ -134,9 +144,9 @@ public class InviteCodeActivity extends AppCompatActivity {
         }
     }
 
-    private void getLocationPermission(){
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION};
-        ActivityCompat.requestPermissions(this, permissions, 1);
-    }
+//    private void getLocationPermission(){
+//        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+//        Manifest.permission.ACCESS_COARSE_LOCATION};
+//        ActivityCompat.requestPermissions(this, permissions, 1);
+//    }
 }

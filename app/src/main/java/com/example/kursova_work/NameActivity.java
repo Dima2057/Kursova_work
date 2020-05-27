@@ -1,9 +1,6 @@
 package com.example.kursova_work;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +20,9 @@ import javax.xml.transform.Result;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * NameActivity - the class processes the name / photo data necessary for registration.
+ */
 public class NameActivity extends AppCompatActivity {
 
     String email, password;
@@ -44,6 +44,10 @@ public class NameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Receiving the entered data, transferring them to InviteCodeActivity
+     * @see InviteCodeActivity
+     * */
     public void generateCode(View v){
         Date myDate = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.getDefault());
@@ -70,6 +74,10 @@ public class NameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Profile picture selection.
+     *
+     * */
     public void selectImage(View v){
         Intent i = new Intent();
         i.setAction(Intent.ACTION_GET_CONTENT);

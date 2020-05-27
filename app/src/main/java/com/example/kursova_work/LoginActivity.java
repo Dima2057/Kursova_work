@@ -16,11 +16,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.invoke.ConstantCallSite;
 
+/**
+ * LoginActivity - The class is responsible for user authorization,
+ * i.e. sending data for authorization to the server.
+ * @version 1.0
+ *
+ */
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     EditText e1, e2;
-    String coord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Sending username/password to the server firebase - authorization.
+     * */
     public void Login(View v){
         auth.signInWithEmailAndPassword(e1.getText().toString(), e2.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
