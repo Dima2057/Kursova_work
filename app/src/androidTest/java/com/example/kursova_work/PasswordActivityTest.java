@@ -19,13 +19,9 @@ public class PasswordActivityTest {
             new ActivityTestRule<>(PasswordActivity.class);
 
     @Test
-    public void checkPasswordEditTextIsDisplayed() {
+    public void checkDisplayedViews() {
         onView(ViewMatchers.withId(R.id.editText2))
                 .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void checkNextButtonIsDisplayed() {
         onView(ViewMatchers.withId(R.id.button3))
                 .check(matches(isDisplayed()));
     }

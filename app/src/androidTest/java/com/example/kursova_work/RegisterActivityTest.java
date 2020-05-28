@@ -19,13 +19,9 @@ public class RegisterActivityTest {
             new ActivityTestRule<>(RegisterActivity.class);
 
     @Test
-    public void checkEmailEditTextIsDisplayed() {
+    public void checkDisplayedViews() {
         onView(ViewMatchers.withId(R.id.editText6))
                 .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void checkNextButtonIsDisplayed() {
         onView(ViewMatchers.withId(R.id.button7))
                 .check(matches(isDisplayed()));
     }
